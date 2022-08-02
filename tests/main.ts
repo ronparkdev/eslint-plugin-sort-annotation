@@ -1,40 +1,16 @@
 function noNeedModifyCases() {
   const A = 'A'
   const B = 'B'
-  const C = 'C'
   enum Type {
     A = 'A',
     B = 'B',
-    C = 'C',
   }
 
   // @sort
-  const array = [1, 2, 3, 11, 12, 13, '1', '11', '2', '22', '3', '33', 'a', 'b', 'c', A, B, C, Type.A, Type.B, Type.C]
+  const array = [1, 2, 11, 12, 1n, 2n, 11n, 12n, '1', '11', '2', '22', 'a', 'b', A, B, Type.A, Type.B]
 
   // @sort:reversed
-  const reversedArray = [
-    Type.C,
-    Type.B,
-    Type.A,
-    C,
-    B,
-    A,
-    'c',
-    'b',
-    'a',
-    '33',
-    '3',
-    '22',
-    '2',
-    '11',
-    '1',
-    13,
-    12,
-    11,
-    3,
-    2,
-    1,
-  ]
+  const reversedArray = [Type.B, Type.A, B, A, 'b', 'a', '22', '2', '11', '1', 12n, 11n, 2n, 1n, 12, 11, 2, 1]
 
   // @sort-keys
   const object = {
@@ -42,26 +18,18 @@ function noNeedModifyCases() {
     '11': '11',
     '2': '2',
     '22': '22',
-    '3': '3',
-    '33': '33',
     a: 'a',
     b: 'b',
-    c: 'c',
     [A]: 'A',
     [B]: 'B',
-    [C]: 'C',
   }
 
   // @sort-keys:reversed
   const reversedObject = {
-    [C]: 'C',
     [B]: 'B',
     [A]: 'A',
-    c: 'c',
     b: 'b',
     a: 'a',
-    '33': '33',
-    '3': '3',
     '22': '22',
     '2': '2',
     '11': '11',
@@ -84,26 +52,18 @@ function noNeedModifyCases() {
     '11': string
     '2': string
     '22': string
-    '3': string
-    '33': string
     a: string
     b: string
-    c: string
     [A]: string
     [B]: string
-    [C]: string
   }
 
   // @sort-keys:reversed
   interface ReversedMockInterface {
-    [C]: string
     [B]: string
     [A]: string
-    c: string
     b: string
     a: string
-    '33': string
-    '3': string
     '22': string
     '2': string
     '11': string
@@ -114,51 +74,23 @@ function noNeedModifyCases() {
 function needLintCases() {
   const A = 'A'
   const B = 'B'
-  const C = 'C'
   enum Type {
     A = 'A',
     B = 'B',
-    C = 'C',
   }
 
   // @sort
-  const array = [Type.C, Type.B, Type.A, C, B, A, 'c', 'b', 'a', '33', '3', '22', '2', '11', '1', 13, 12, 11, 3, 2, 1]
+  const array = [Type.B, Type.A, B, A, 'b', 'a', '22', '2', '11', '1', 12n, 11n, 2n, 1n, 12, 11, 2, 1]
 
   // @sort:reversed
-  const reversedArray = [
-    1,
-    2,
-    3,
-    11,
-    12,
-    13,
-    '1',
-    '11',
-    '2',
-    '22',
-    '3',
-    '33',
-    'a',
-    'b',
-    'c',
-    A,
-    B,
-    C,
-    Type.A,
-    Type.B,
-    Type.C,
-  ]
+  const reversedArray = [1, 2, 11, 12, 1n, 2n, 11n, 12n, '1', '11', '2', '22', 'a', 'b', A, B, Type.A, Type.B]
 
   // @sort-keys
   const object = {
-    [C]: 'C',
     [B]: 'B',
     [A]: 'A',
-    c: 'c',
     b: 'b',
     a: 'a',
-    '33': '33',
-    '3': '3',
     '22': '22',
     '2': '2',
     '11': '11',
@@ -171,14 +103,10 @@ function needLintCases() {
     '11': '11',
     '2': '2',
     '22': '22',
-    '3': '3',
-    '33': '33',
     a: 'a',
     b: 'b',
-    c: 'c',
     [A]: 'A',
     [B]: 'B',
-    [C]: 'C',
   }
 
   /*
@@ -193,14 +121,10 @@ function needLintCases() {
 
   // @sort-keys
   interface MockInterface {
-    [C]: string
     [B]: string
     [A]: string
-    c: string
     b: string
     a: string
-    '33': string
-    '3': string
     '22': string
     '2': string
     '11': string
@@ -213,13 +137,9 @@ function needLintCases() {
     '11': string
     '2': string
     '22': string
-    '3': string
-    '33': string
     a: string
     b: string
-    c: string
     [A]: string
     [B]: string
-    [C]: string
   }
 }

@@ -3,6 +3,8 @@
   "compilerOptions": {
     "baseUrl": "./",
     "removeComments": false,
+    "target": "es2020",
+    "lib": ["es2020"]
   },
   "include": ["./**/*.ts"]
 }

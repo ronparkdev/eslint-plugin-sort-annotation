@@ -24,14 +24,12 @@ ruleTester.run('sort-annotation', rule, {
       code: `
       const A = 'A'
       const B = 'B'
-      const C = 'C'
       enum Type {
         A = 'A',
         B = 'B',
-        C = 'C',
       }
       // @sort
-      const array = [1, 2, 3, 11, 12, 13, '1', '11', '2', '22', '3', '33', 'a', 'b', 'c', A, B, C, Type.A, Type.B, Type.C]
+      const array = [1, 2, 11, 12, 1n, 2n, 11n, 12n, '1', '11', '2', '22', 'a', 'b', A, B, Type.A, Type.B]
       `,
       filename: getFilename('main.ts'),
     },
@@ -46,7 +44,7 @@ ruleTester.run('sort-annotation', rule, {
         C = 'C',
       }
       // @sort:reversed
-      const reversedArray = [Type.C, Type.B, Type.A, C, B, A, 'c', 'b', 'a', '33', '3', '22', '2', '11', '1', 13, 12, 11, 3, 2, 1]
+      const reversedArray = [Type.B, Type.A, B, A, 'b', 'a', '22', '2', '11', '1', 12n, 11n, 2n, 1n, 12, 11, 2, 1]    
       `,
       filename: getFilename('main.ts'),
     },
@@ -74,14 +72,12 @@ ruleTester.run('sort-annotation', rule, {
       code: `
       const A = 'A'
       const B = 'B'
-      const C = 'C'
       enum Type {
         A = 'A',
         B = 'B',
-        C = 'C',
       }
       // @sort
-      const array = [Type.C, Type.B, Type.A, C, B, A, 'c', 'b', 'a', '33', '3', '22', '2', '11', '1', 13, 12, 11, 3, 2, 1]
+      const array = [Type.B, Type.A, B, A, 'b', 'a', '22', '2', '11', '1', 12n, 11n, 2n, 1n, 12, 11, 2, 1]
       `,
       errors: [
         {
@@ -92,14 +88,12 @@ ruleTester.run('sort-annotation', rule, {
       output: `
       const A = 'A'
       const B = 'B'
-      const C = 'C'
       enum Type {
         A = 'A',
         B = 'B',
-        C = 'C',
       }
       // @sort
-      const array = [1, 2, 3, 11, 12, 13, '1', '11', '2', '22', '3', '33', 'a', 'b', 'c', A, B, C, Type.A, Type.B, Type.C]
+      const array = [1, 2, 11, 12, 1n, 2n, 11n, 12n, '1', '11', '2', '22', 'a', 'b', A, B, Type.A, Type.B]
       `,
       filename: getFilename('main.ts'),
     },
@@ -107,9 +101,8 @@ ruleTester.run('sort-annotation', rule, {
       code: `
       const A = 'A'
       const B = 'B'
-      const C = 'C'
       // @sort:reversed
-      const reversedArray = [1, 2, 3, 11, 12, 13, '1', '11', '2', '22', '3', '33', 'a', 'b', 'c', A, B, C]
+      const reversedArray = [1, 2, 11, 12, 1n, 2n, 11n, 12n, '1', '11', '2', '22', 'a', 'b', A, B, Type.A, Type.B]
       `,
       errors: [
         {
@@ -120,9 +113,8 @@ ruleTester.run('sort-annotation', rule, {
       output: `
       const A = 'A'
       const B = 'B'
-      const C = 'C'
       // @sort:reversed
-      const reversedArray = [C, B, A, 'c', 'b', 'a', '33', '3', '22', '2', '11', '1', 13, 12, 11, 3, 2, 1]
+      const reversedArray = [Type.B, Type.A, B, A, 'b', 'a', '22', '2', '11', '1', 12n, 11n, 2n, 1n, 12, 11, 2, 1]
       `,
       filename: getFilename('main.ts'),
     },
