@@ -23,7 +23,7 @@ export const getLiteralTypeOrder = (
 
 type Element = Expression | SpreadElement
 
-const makeObjectComparer = ({ isReversed }: { isReversed: boolean }) => {
+const makeObjectPropertyComparer = ({ isReversed }: { isReversed: boolean }) => {
   const comparer = (l: ObjectLiteralElement, r: ObjectLiteralElement) => {
     if (l.type === AST_NODE_TYPES.Property && r.type === AST_NODE_TYPES.Property) {
       if (l.key.type === AST_NODE_TYPES.Literal && r.key.type === AST_NODE_TYPES.Literal) {
@@ -38,7 +38,7 @@ const makeObjectComparer = ({ isReversed }: { isReversed: boolean }) => {
         // Both string should compare in dictionary order
         return l.key.name < r.key.name ? -1 : 1
       } else {
-        // Other types should sort as [AST_NODE_TYPES.Literal, AST_NODE_TYPES.Identifier, others]
+        // Other types should sort as [AST_NODE_TYPES.Literal, AST_NODE_TYPES.Identifier, AST_NODE_TYPES.MemberExpression, others]
         return getAstNodeTypeOrder(l.key.type) - getAstNodeTypeOrder(r.key.type)
       }
     } else {
@@ -77,7 +77,7 @@ const makeInterfacePropertyComparer = ({ isReversed }: { isReversed: boolean }) 
   return isReversed ? (l: TypeElement, r: TypeElement) => -comparer(l, r) : comparer
 }
 
-const makeArrayComparer = ({ isReversed, sourceCode }: { isReversed: boolean; sourceCode: SourceCode }) => {
+const makeArrayValueComparer = ({ isReversed, sourceCode }: { isReversed: boolean; sourceCode: SourceCode }) => {
   const fullText = sourceCode.getText()
 
   const comparer = (l: Element, r: Element) => {
@@ -109,7 +109,7 @@ const makeArrayComparer = ({ isReversed, sourceCode }: { isReversed: boolean; so
 }
 
 export const ComparerUtils = {
-  makeObjectComparer,
-  makeArrayComparer,
+  makeObjectPropertyComparer,
   makeInterfacePropertyComparer,
+  makeArrayValueComparer,
 }

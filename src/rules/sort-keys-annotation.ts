@@ -39,7 +39,7 @@ export default createRule<Options, MessageIds>({
 
         const { isReversed } = config
 
-        const comparer = ComparerUtils.makeObjectComparer({ isReversed })
+        const comparer = ComparerUtils.makeObjectPropertyComparer({ isReversed })
 
         const sortedProperties = [...node.properties].sort(comparer)
 
