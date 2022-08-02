@@ -2,81 +2,83 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ComparerUtils = exports.getLiteralTypeOrder = exports.getAstNodeTypeOrder = void 0;
 const utils_1 = require("@typescript-eslint/utils");
-const getAstNodeTypeOrder = (type) => {
-    const order = [utils_1.AST_NODE_TYPES.Literal, utils_1.AST_NODE_TYPES.Identifier, utils_1.AST_NODE_TYPES.MemberExpression].indexOf(type);
-    const END_OF_ORDER = 2;
-    return order === -1 ? END_OF_ORDER : order;
-};
+const AST_NODE_TYPE_ORDERS = [utils_1.AST_NODE_TYPES.Literal, utils_1.AST_NODE_TYPES.Identifier, utils_1.AST_NODE_TYPES.MemberExpression];
+const LITERAL_TYPE_ORDERS = ['boolean', 'number', 'bigint', 'string'];
+const getAstNodeTypeOrder = (type) => AST_NODE_TYPE_ORDERS.includes(type) ? AST_NODE_TYPE_ORDERS.indexOf(type) : AST_NODE_TYPE_ORDERS.length;
 exports.getAstNodeTypeOrder = getAstNodeTypeOrder;
-const getLiteralTypeOrder = (type) => {
-    const order = ['undefined', 'boolean', 'number', 'bigint', 'string'].indexOf(type);
-    const END_OF_ORDER = 5;
-    return order === -1 ? END_OF_ORDER : order;
-};
+const getLiteralTypeOrder = (type) => (LITERAL_TYPE_ORDERS.includes(type) ? LITERAL_TYPE_ORDERS.indexOf(type) : LITERAL_TYPE_ORDERS.length);
 exports.getLiteralTypeOrder = getLiteralTypeOrder;
+const compareProperty = (l, r) => {
+    if (l.key.type === utils_1.AST_NODE_TYPES.Literal && r.key.type === utils_1.AST_NODE_TYPES.Literal) {
+        const lKey = l.key.value;
+        const rKey = r.key.value;
+        return lKey === rKey ? 0 : lKey < rKey ? -1 : 1;
+    }
+    else if (l.key.type === utils_1.AST_NODE_TYPES.Identifier && r.key.type === utils_1.AST_NODE_TYPES.Identifier) {
+        if (l.computed !== r.computed) {
+            return l.computed ? 1 : -1;
+        }
+        const lKey = l.key.name;
+        const rKey = r.key.name;
+        return lKey === rKey ? 0 : lKey < rKey ? -1 : 1;
+    }
+    else {
+        const lOrder = (0, exports.getAstNodeTypeOrder)(l.key.type);
+        const rOrder = (0, exports.getAstNodeTypeOrder)(r.key.type);
+        return lOrder - rOrder;
+    }
+};
 const makeObjectPropertyComparer = ({ isReversed }) => {
     const comparer = (l, r) => {
         if (l.type === utils_1.AST_NODE_TYPES.Property && r.type === utils_1.AST_NODE_TYPES.Property) {
-            if (l.key.type === utils_1.AST_NODE_TYPES.Literal && r.key.type === utils_1.AST_NODE_TYPES.Literal) {
-                return l.key.value < r.key.value ? -1 : 1;
-            }
-            else if (l.key.type === utils_1.AST_NODE_TYPES.Identifier && r.key.type === utils_1.AST_NODE_TYPES.Identifier) {
-                if (l.computed !== r.computed) {
-                    return l.computed ? 1 : -1;
-                }
-                return l.key.name < r.key.name ? -1 : 1;
-            }
-            else {
-                return (0, exports.getAstNodeTypeOrder)(l.key.type) - (0, exports.getAstNodeTypeOrder)(r.key.type);
-            }
+            return compareProperty(l, r);
         }
-        else {
-            return 0;
-        }
+        return 0;
     };
     return isReversed ? (l, r) => -comparer(l, r) : comparer;
 };
 const makeInterfacePropertyComparer = ({ isReversed }) => {
     const comparer = (l, r) => {
         if (l.type === utils_1.AST_NODE_TYPES.TSPropertySignature && r.type === utils_1.AST_NODE_TYPES.TSPropertySignature) {
-            if (l.key.type === utils_1.AST_NODE_TYPES.Literal && r.key.type === utils_1.AST_NODE_TYPES.Literal) {
-                return l.key.value < r.key.value ? -1 : 1;
-            }
-            else if (l.key.type === utils_1.AST_NODE_TYPES.Identifier && r.key.type === utils_1.AST_NODE_TYPES.Identifier) {
-                if (l.computed !== r.computed) {
-                    return l.computed ? 1 : -1;
-                }
-                return l.key.name < r.key.name ? -1 : 1;
-            }
-            else {
-                return (0, exports.getAstNodeTypeOrder)(l.key.type) - (0, exports.getAstNodeTypeOrder)(r.key.type);
-            }
+            return compareProperty(l, r);
         }
-        else {
-            return 0;
-        }
+        return 0;
     };
     return isReversed ? (l, r) => -comparer(l, r) : comparer;
+};
+const compareLiterals = (l, r) => {
+    const a = typeof l;
+    if (typeof l !== typeof r) {
+        const lOrder = (0, exports.getLiteralTypeOrder)(typeof l);
+        const rOrder = (0, exports.getLiteralTypeOrder)(typeof r);
+        return lOrder - rOrder;
+    }
+    else if (typeof l === 'boolean' && typeof r === 'boolean') {
+        return l === r ? 0 : r ? -1 : 1;
+    }
+    else if (typeof l === 'number' && typeof r === 'number') {
+        return l - r;
+    }
+    else if (typeof l === 'bigint' && typeof r === 'bigint') {
+        return l === r ? 0 : l < r ? -1 : 1;
+    }
+    else if (typeof l === 'string' && typeof r === 'string') {
+        return l === r ? 0 : l < r ? -1 : 1;
+    }
+    else {
+        return 0;
+    }
 };
 const makeArrayValueComparer = ({ isReversed, sourceCode }) => {
     const fullText = sourceCode.getText();
     const comparer = (l, r) => {
         if (l.type === utils_1.AST_NODE_TYPES.Literal && r.type === utils_1.AST_NODE_TYPES.Literal) {
-            if (typeof l.value !== typeof r.value) {
-                return (0, exports.getLiteralTypeOrder)(typeof l.value) - (0, exports.getLiteralTypeOrder)(typeof r.value);
-            }
-            else if (typeof l.value === 'number' && typeof r.value === 'number') {
-                return l.value - r.value;
-            }
-            else if (typeof l.value === 'string' && typeof r.value === 'string') {
-                return l.value < r.value ? -1 : 1;
-            }
-            else {
-                return 0;
-            }
+            return compareLiterals(l.value, r.value);
         }
         else if (l.type === r.type) {
-            return fullText.slice(...l.range) < fullText.slice(...r.range) ? -1 : 1;
+            const lText = fullText.slice(...l.range);
+            const rText = fullText.slice(...r.range);
+            return lText === rText ? 0 : lText < rText ? -1 : 1;
         }
         else {
             return (0, exports.getAstNodeTypeOrder)(l.type) - (0, exports.getAstNodeTypeOrder)(r.type);
