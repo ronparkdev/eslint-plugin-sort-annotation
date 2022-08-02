@@ -88,6 +88,9 @@ const compareLiterals = (l: LiteralType, r: LiteralType): number => {
   } else if (typeof l === 'number' && typeof r === 'number') {
     // Both number should compare in numerical order
     return l - r
+  } else if (typeof l === 'bigint' && typeof r === 'bigint') {
+    // Both bigint should compare in numerical order
+    return l === r ? 0 : l < r ? -1 : 1
   } else if (typeof l === 'string' && typeof r === 'string') {
     // Both string should compare in alphabetical order
     return l === r ? 0 : l < r ? -1 : 1
