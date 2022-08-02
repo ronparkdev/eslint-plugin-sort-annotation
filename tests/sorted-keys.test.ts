@@ -4,7 +4,7 @@ import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils'
 
 const { RuleTester } = ESLintUtils
 
-import rule from '../src/rules/sort-keys'
+import rule from '../src/rules/sort-keys-annotation'
 
 const getFilename = (filePath: string): string => path.resolve('./tests', filePath)
 

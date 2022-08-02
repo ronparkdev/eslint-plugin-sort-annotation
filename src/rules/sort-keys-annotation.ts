@@ -10,7 +10,7 @@ type Options = []
 type MessageIds = 'hasUnsortedKeys'
 
 export default createRule<Options, MessageIds>({
-  name: 'sort-keys',
+  name: 'sort-keys-annotation',
   meta: {
     docs: {
       description: 'Sort keys in object or array',
@@ -141,8 +141,6 @@ export default createRule<Options, MessageIds>({
           }))
 
           const fixedText = getFixedText(node.range, diffRanges)
-
-          console.log(fixedText)
 
           context.report({
             node,

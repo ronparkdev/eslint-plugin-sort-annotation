@@ -5,7 +5,7 @@ const array_1 = require("../utils/array");
 const comparer_1 = require("../utils/comparer");
 const createRule_1 = require("../utils/createRule");
 exports.default = (0, createRule_1.createRule)({
-    name: 'sort-keys',
+    name: 'sort-keys-annotation',
     meta: {
         docs: {
             description: 'Sort keys in object or array',
@@ -33,7 +33,7 @@ exports.default = (0, createRule_1.createRule)({
             const matchedCommentLineString = matchedComment.value
                 .split('\n')
                 .map((lineString) => lineString.trim())
-                .find((lineString) => lineString.startsWith('@sort-keys'));
+                .find((lineString) => lineString.startsWith('@sort-keys-annotation'));
             if (!matchedCommentLineString) {
                 return null;
             }
