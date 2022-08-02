@@ -29,7 +29,7 @@ ruleTester.run('sort-annotation', rule, {
         B = 'B',
       }
       // @sort
-      const array = [1, 2, 11, 12, 1n, 2n, 11n, 12n, '1', '11', '2', '22', 'a', 'b', A, B, Type.A, Type.B]
+      const array = [false, true, 1, 2, 11, 12, 1n, 2n, 11n, 12n, '1', '11', '2', '22', 'a', 'b', A, B, Type.A, Type.B]
       `,
       filename: getFilename('main.ts'),
     },
@@ -44,7 +44,7 @@ ruleTester.run('sort-annotation', rule, {
         C = 'C',
       }
       // @sort:reversed
-      const reversedArray = [Type.B, Type.A, B, A, 'b', 'a', '22', '2', '11', '1', 12n, 11n, 2n, 1n, 12, 11, 2, 1]    
+      const reversedArray = [Type.B, Type.A, B, A, 'b', 'a', '22', '2', '11', '1', 12n, 11n, 2n, 1n, 12, 11, 2, 1, true, false]    
       `,
       filename: getFilename('main.ts'),
     },
@@ -77,7 +77,7 @@ ruleTester.run('sort-annotation', rule, {
         B = 'B',
       }
       // @sort
-      const array = [Type.B, Type.A, B, A, 'b', 'a', '22', '2', '11', '1', 12n, 11n, 2n, 1n, 12, 11, 2, 1]
+      const array = [Type.B, Type.A, B, A, 'b', 'a', '22', '2', '11', '1', 12n, 11n, 2n, 1n, 12, 11, 2, 1, true, false]
       `,
       errors: [
         {
@@ -93,7 +93,7 @@ ruleTester.run('sort-annotation', rule, {
         B = 'B',
       }
       // @sort
-      const array = [1, 2, 11, 12, 1n, 2n, 11n, 12n, '1', '11', '2', '22', 'a', 'b', A, B, Type.A, Type.B]
+      const array = [false, true, 1, 2, 11, 12, 1n, 2n, 11n, 12n, '1', '11', '2', '22', 'a', 'b', A, B, Type.A, Type.B]
       `,
       filename: getFilename('main.ts'),
     },
@@ -102,7 +102,7 @@ ruleTester.run('sort-annotation', rule, {
       const A = 'A'
       const B = 'B'
       // @sort:reversed
-      const reversedArray = [1, 2, 11, 12, 1n, 2n, 11n, 12n, '1', '11', '2', '22', 'a', 'b', A, B, Type.A, Type.B]
+      const reversedArray = [false, true, 1, 2, 11, 12, 1n, 2n, 11n, 12n, '1', '11', '2', '22', 'a', 'b', A, B, Type.A, Type.B]
       `,
       errors: [
         {
@@ -114,7 +114,7 @@ ruleTester.run('sort-annotation', rule, {
       const A = 'A'
       const B = 'B'
       // @sort:reversed
-      const reversedArray = [Type.B, Type.A, B, A, 'b', 'a', '22', '2', '11', '1', 12n, 11n, 2n, 1n, 12, 11, 2, 1]
+      const reversedArray = [Type.B, Type.A, B, A, 'b', 'a', '22', '2', '11', '1', 12n, 11n, 2n, 1n, 12, 11, 2, 1, true, false]
       `,
       filename: getFilename('main.ts'),
     },
