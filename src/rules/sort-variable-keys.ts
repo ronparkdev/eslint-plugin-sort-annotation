@@ -5,12 +5,7 @@ import { ArrayUtils } from '../utils/array'
 import { ComparerUtils } from '../utils/comparer'
 import { createRule } from '../utils/createRule'
 
-type Options = [
-  {
-    sortKeysOfObject?: boolean
-    sortKeysOfArray?: boolean
-  },
-]
+type Options = []
 
 type MessageIds = 'hasUnsortedKeys'
 
@@ -24,35 +19,13 @@ export default createRule<Options, MessageIds>({
     },
     fixable: 'code',
     type: 'suggestion',
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          sortKeysOfObject: {
-            description: 'Sort keys in object',
-            type: 'boolean',
-            default: true,
-          },
-          sortKeysOfArray: {
-            description: 'Sort keys in array',
-            type: 'boolean',
-            default: true,
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
+    schema: [],
     messages: {
       hasUnsortedKeys: `has unsorted keys`,
     },
   },
-  defaultOptions: [
-    {
-      sortKeysOfObject: true,
-      sortKeysOfArray: true,
-    },
-  ],
-  create(context, [options]) {
+  defaultOptions: [],
+  create(context) {
     const sourceCode = context.getSourceCode()
 
     const getConfig = (commentEndLine: number) => {
