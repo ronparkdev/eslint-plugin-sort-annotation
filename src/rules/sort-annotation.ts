@@ -9,10 +9,10 @@ type Options = []
 type MessageIds = 'hasUnsortedKeys'
 
 export default createRule<Options, MessageIds>({
-  name: 'sort-keys-annotation',
+  name: 'sort-annotation',
   meta: {
     docs: {
-      description: 'Sort keys in object if annotated as @sort-keys',
+      description: 'Sort array if annotated as @sort',
       recommended: 'error',
       suggestion: true,
     },
@@ -28,10 +28,10 @@ export default createRule<Options, MessageIds>({
     const sourceCode = context.getSourceCode()
 
     return {
-      ObjectExpression(node): void {
+      ArrayExpression(node): void {
         const commentExpectedEndLine = node.loc.start.line - 1
 
-        const config = ConfigUtils.getConfig(sourceCode, '@sort-keys', commentExpectedEndLine)
+        const config = ConfigUtils.getConfig(sourceCode, '@sort', commentExpectedEndLine)
 
         if (!config) {
           return
@@ -39,16 +39,16 @@ export default createRule<Options, MessageIds>({
 
         const { isReversed } = config
 
-        const comparer = ComparerUtils.makeObjectComparer({ isReversed })
+        const comparer = ComparerUtils.makeArrayComparer({ isReversed })
 
-        const sortedProperties = [...node.properties].sort(comparer)
+        const sortedElements = [...node.elements].sort(comparer)
 
-        const needSort = ArrayUtils.zip2(node.properties, sortedProperties).some(
-          ([property, sortedProperty]) => property !== sortedProperty,
+        const needSort = ArrayUtils.zip2(node.elements, sortedElements).some(
+          ([element, sortedElement]) => element !== sortedElement,
         )
 
         if (needSort) {
-          const diffRanges = ArrayUtils.zip2(node.properties, sortedProperties).map(([from, to]) => ({
+          const diffRanges = ArrayUtils.zip2(node.elements, sortedElements).map(([from, to]) => ({
             from: from.range,
             to: to.range,
           }))
