@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ComparerUtils = exports.getLiteralTypeOrder = exports.getAstNodeTypeOrder = void 0;
 const utils_1 = require("@typescript-eslint/utils");
 const getAstNodeTypeOrder = (type) => {
-    const order = [utils_1.AST_NODE_TYPES.Literal, utils_1.AST_NODE_TYPES.Identifier].indexOf(type);
+    const order = [utils_1.AST_NODE_TYPES.Literal, utils_1.AST_NODE_TYPES.Identifier, utils_1.AST_NODE_TYPES.MemberExpression].indexOf(type);
     const END_OF_ORDER = 2;
     return order === -1 ? END_OF_ORDER : order;
 };
@@ -14,7 +14,7 @@ const getLiteralTypeOrder = (type) => {
     return order === -1 ? END_OF_ORDER : order;
 };
 exports.getLiteralTypeOrder = getLiteralTypeOrder;
-const makeObjectComparer = ({ isReversed }) => {
+const makeObjectPropertyComparer = ({ isReversed }) => {
     const comparer = (l, r) => {
         if (l.type === utils_1.AST_NODE_TYPES.Property && r.type === utils_1.AST_NODE_TYPES.Property) {
             if (l.key.type === utils_1.AST_NODE_TYPES.Literal && r.key.type === utils_1.AST_NODE_TYPES.Literal) {
@@ -36,7 +36,30 @@ const makeObjectComparer = ({ isReversed }) => {
     };
     return isReversed ? (l, r) => -comparer(l, r) : comparer;
 };
-const makeArrayComparer = ({ isReversed }) => {
+const makeInterfacePropertyComparer = ({ isReversed }) => {
+    const comparer = (l, r) => {
+        if (l.type === utils_1.AST_NODE_TYPES.TSPropertySignature && r.type === utils_1.AST_NODE_TYPES.TSPropertySignature) {
+            if (l.key.type === utils_1.AST_NODE_TYPES.Literal && r.key.type === utils_1.AST_NODE_TYPES.Literal) {
+                return l.key.value < r.key.value ? -1 : 1;
+            }
+            else if (l.key.type === utils_1.AST_NODE_TYPES.Identifier && r.key.type === utils_1.AST_NODE_TYPES.Identifier) {
+                if (l.computed !== r.computed) {
+                    return l.computed ? 1 : -1;
+                }
+                return l.key.name < r.key.name ? -1 : 1;
+            }
+            else {
+                return (0, exports.getAstNodeTypeOrder)(l.key.type) - (0, exports.getAstNodeTypeOrder)(r.key.type);
+            }
+        }
+        else {
+            return 0;
+        }
+    };
+    return isReversed ? (l, r) => -comparer(l, r) : comparer;
+};
+const makeArrayValueComparer = ({ isReversed, sourceCode }) => {
+    const fullText = sourceCode.getText();
     const comparer = (l, r) => {
         if (l.type === utils_1.AST_NODE_TYPES.Literal && r.type === utils_1.AST_NODE_TYPES.Literal) {
             if (typeof l.value !== typeof r.value) {
@@ -52,19 +75,17 @@ const makeArrayComparer = ({ isReversed }) => {
                 return 0;
             }
         }
-        else if (l.type === utils_1.AST_NODE_TYPES.Identifier && r.type === utils_1.AST_NODE_TYPES.Identifier) {
-            return l.name < r.name ? -1 : 1;
-        }
-        else if (l.type !== r.type) {
-            return (0, exports.getAstNodeTypeOrder)(l.type) - (0, exports.getAstNodeTypeOrder)(r.type);
+        else if (l.type === r.type) {
+            return fullText.slice(...l.range) < fullText.slice(...r.range) ? -1 : 1;
         }
         else {
-            return 0;
+            return (0, exports.getAstNodeTypeOrder)(l.type) - (0, exports.getAstNodeTypeOrder)(r.type);
         }
     };
     return isReversed ? (l, r) => -comparer(l, r) : comparer;
 };
 exports.ComparerUtils = {
-    makeObjectComparer,
-    makeArrayComparer,
+    makeObjectPropertyComparer,
+    makeInterfacePropertyComparer,
+    makeArrayValueComparer,
 };

@@ -31,7 +31,7 @@ exports.default = (0, createRule_1.createRule)({
                     return;
                 }
                 const { isReversed } = config;
-                const comparer = comparer_1.ComparerUtils.makeArrayComparer({ isReversed });
+                const comparer = comparer_1.ComparerUtils.makeArrayValueComparer({ isReversed, sourceCode });
                 const sortedElements = [...node.elements].sort(comparer);
                 const needSort = array_1.ArrayUtils.zip2(node.elements, sortedElements).some(([element, sortedElement]) => element !== sortedElement);
                 if (needSort) {

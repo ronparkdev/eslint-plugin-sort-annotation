@@ -31,11 +31,37 @@ exports.default = (0, createRule_1.createRule)({
                     return;
                 }
                 const { isReversed } = config;
-                const comparer = comparer_1.ComparerUtils.makeObjectComparer({ isReversed });
+                const comparer = comparer_1.ComparerUtils.makeObjectPropertyComparer({ isReversed });
                 const sortedProperties = [...node.properties].sort(comparer);
                 const needSort = array_1.ArrayUtils.zip2(node.properties, sortedProperties).some(([property, sortedProperty]) => property !== sortedProperty);
                 if (needSort) {
                     const diffRanges = array_1.ArrayUtils.zip2(node.properties, sortedProperties).map(([from, to]) => ({
+                        from: from.range,
+                        to: to.range,
+                    }));
+                    const fixedText = fix_1.FixUtils.getFixedText(sourceCode, node.range, diffRanges);
+                    context.report({
+                        node,
+                        messageId: 'hasUnsortedKeys',
+                        fix(fixer) {
+                            return fixer.replaceTextRange(node.range, fixedText);
+                        },
+                    });
+                }
+            },
+            TSInterfaceDeclaration(node) {
+                const commentExpectedEndLine = node.loc.start.line - 1;
+                const config = config_1.ConfigUtils.getConfig(sourceCode, '@sort-keys', commentExpectedEndLine);
+                if (!config) {
+                    return;
+                }
+                const { isReversed } = config;
+                const comparer = comparer_1.ComparerUtils.makeInterfacePropertyComparer({ isReversed });
+                const properties = node.body.body;
+                const sortedProperties = [...properties].sort(comparer);
+                const needSort = array_1.ArrayUtils.zip2(properties, sortedProperties).some(([property, sortedProperty]) => property !== sortedProperty);
+                if (needSort) {
+                    const diffRanges = array_1.ArrayUtils.zip2(properties, sortedProperties).map(([from, to]) => ({
                         from: from.range,
                         to: to.range,
                     }));
