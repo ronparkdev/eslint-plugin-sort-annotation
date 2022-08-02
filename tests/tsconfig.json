@@ -1,0 +1,8 @@
+{
+  "extends": "../tsconfig.test.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "removeComments": false,
+  },
+  "include": ["./**/*.ts"]
+}
