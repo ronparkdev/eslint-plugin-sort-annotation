@@ -14,7 +14,7 @@ module.exports = {
     project: ['./tsconfig.json'], // Add your tsconfig path to parserOptions.project
   },
   rules: {
-    'sort-variable-keys': 'error',
+    'sort-variable-keys/sort-variable-keys': 'error',
   }
 }
 ```
