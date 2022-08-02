@@ -66,6 +66,52 @@ ruleTester.run('sort-keys-annotation', rule, {
       `,
       filename: getFilename('main.ts'),
     },
+    {
+      code: `
+      const A = 'A'
+      const B = 'B'
+      const C = 'C'
+      // @sort-keys
+      interface MockInterface {
+        '1': string
+        '11': string
+        '2': string
+        '22': string
+        '3': string
+        '33': string
+        a: string
+        b: string
+        c: string
+        [A]: string
+        [B]: string
+        [C]: string
+      }
+      `,
+      filename: getFilename('main.ts'),
+    },
+    {
+      code: `
+      const A = 'A'
+      const B = 'B'
+      const C = 'C'
+      // @sort-keys:reversed
+      interface ReversedMockInterface {
+        [C]: string
+        [B]: string
+        [A]: string
+        c: string
+        b: string
+        a: string
+        '33': string
+        '3': string
+        '22': string
+        '2': string
+        '11': string
+        '1': string
+      }
+      `,
+      filename: getFilename('main.ts'),
+    },
   ],
   invalid: [
     {
@@ -162,6 +208,104 @@ ruleTester.run('sort-keys-annotation', rule, {
         '2': '2',
         '11': '11',
         '1': '1',
+      }
+      `,
+      filename: getFilename('main.ts'),
+    },
+    {
+      code: `
+      const A = 'A'
+      const B = 'B'
+      const C = 'C'
+      // @sort-keys
+      interface MockInterface {
+        [C]: string
+        [B]: string
+        [A]: string
+        c: string
+        b: string
+        a: string
+        '33': string
+        '3': string
+        '22': string
+        '2': string
+        '11': string
+        '1': string
+      }
+      `,
+      errors: [
+        {
+          messageId: 'hasUnsortedKeys',
+          type: AST_NODE_TYPES.TSInterfaceDeclaration,
+        },
+      ],
+      output: `
+      const A = 'A'
+      const B = 'B'
+      const C = 'C'
+      // @sort-keys
+      interface MockInterface {
+        '1': string
+        '11': string
+        '2': string
+        '22': string
+        '3': string
+        '33': string
+        a: string
+        b: string
+        c: string
+        [A]: string
+        [B]: string
+        [C]: string
+      }
+      `,
+      filename: getFilename('main.ts'),
+    },
+    {
+      code: `
+      const A = 'A'
+      const B = 'B'
+      const C = 'C'
+      // @sort-keys:reversed
+      interface ReversedMockInterface {
+        '1': string
+        '11': string
+        '2': string
+        '22': string
+        '3': string
+        '33': string
+        a: string
+        b: string
+        c: string
+        [A]: string
+        [B]: string
+        [C]: string
+      }
+      `,
+      errors: [
+        {
+          messageId: 'hasUnsortedKeys',
+          type: AST_NODE_TYPES.TSInterfaceDeclaration,
+        },
+      ],
+      output: `
+      const A = 'A'
+      const B = 'B'
+      const C = 'C'
+      // @sort-keys:reversed
+      interface ReversedMockInterface {
+        [C]: string
+        [B]: string
+        [A]: string
+        c: string
+        b: string
+        a: string
+        '33': string
+        '3': string
+        '22': string
+        '2': string
+        '11': string
+        '1': string
       }
       `,
       filename: getFilename('main.ts'),

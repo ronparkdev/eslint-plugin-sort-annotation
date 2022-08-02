@@ -77,6 +77,38 @@ function noNeedModifyCases() {
     @sort:reversed
   */
   const reversedSimpleArray = [2, 1]
+
+  // @sort-keys
+  interface MockInterface {
+    '1': string
+    '11': string
+    '2': string
+    '22': string
+    '3': string
+    '33': string
+    a: string
+    b: string
+    c: string
+    [A]: string
+    [B]: string
+    [C]: string
+  }
+
+  // @sort-keys:reversed
+  interface ReversedMockInterface {
+    [C]: string
+    [B]: string
+    [A]: string
+    c: string
+    b: string
+    a: string
+    '33': string
+    '3': string
+    '22': string
+    '2': string
+    '11': string
+    '1': string
+  }
 }
 
 function needLintCases() {
@@ -158,4 +190,36 @@ function needLintCases() {
     @sort:reversed
   */
   const reversedSimpleArray = [1, 2]
+
+  // @sort-keys
+  interface MockInterface {
+    [C]: string
+    [B]: string
+    [A]: string
+    c: string
+    b: string
+    a: string
+    '33': string
+    '3': string
+    '22': string
+    '2': string
+    '11': string
+    '1': string
+  }
+
+  // @sort-keys:reversed
+  interface ReversedMockInterface {
+    '1': string
+    '11': string
+    '2': string
+    '22': string
+    '3': string
+    '33': string
+    a: string
+    b: string
+    c: string
+    [A]: string
+    [B]: string
+    [C]: string
+  }
 }
