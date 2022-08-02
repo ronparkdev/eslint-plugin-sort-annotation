@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-sort-annotation",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Lint rule to autofix unsorted object's keys or array",
   "main": "dist/index.js",
   "scripts": {

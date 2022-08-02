@@ -13,7 +13,7 @@ const getConfig = (sourceCode, annotationName, commentEndLine) => {
     const matchedCommentLineString = matchedComment.value
         .split('\n')
         .map((lineString) => lineString.trim())
-        .find((lineString) => lineString.startsWith(annotationName));
+        .find((lineString) => lineString.split(' ').includes(annotationName));
     if (!matchedCommentLineString) {
         return null;
     }
