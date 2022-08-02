@@ -7,6 +7,9 @@ import {
 import { AST_NODE_TYPES } from '@typescript-eslint/utils'
 import { SourceCode } from '@typescript-eslint/utils/dist/ts-eslint'
 
+type Element = Expression | SpreadElement
+type LiteralType = string | number | bigint | boolean | RegExp
+
 export const getAstNodeTypeOrder = (type: AST_NODE_TYPES) => {
   const order = [AST_NODE_TYPES.Literal, AST_NODE_TYPES.Identifier, AST_NODE_TYPES.MemberExpression].indexOf(type)
   const END_OF_ORDER = 2
@@ -14,14 +17,12 @@ export const getAstNodeTypeOrder = (type: AST_NODE_TYPES) => {
 }
 
 export const getLiteralTypeOrder = (
-  type: 'undefined' | 'boolean' | 'number' | 'bigint' | 'string' | 'object' | 'symbol' | 'function',
+  type: 'string' | 'number' | 'bigint' | 'boolean' | 'symbol' | 'undefined' | 'object' | 'function',
 ) => {
-  const order = ['undefined', 'boolean', 'number', 'bigint', 'string'].indexOf(type)
+  const order = ['boolean', 'number', 'bigint', 'string'].indexOf(type)
   const END_OF_ORDER = 5
   return order === -1 ? END_OF_ORDER : order
 }
-
-type Element = Expression | SpreadElement
 
 const makeObjectPropertyComparer = ({ isReversed }: { isReversed: boolean }) => {
   const comparer = (l: ObjectLiteralElement, r: ObjectLiteralElement) => {
@@ -77,24 +78,31 @@ const makeInterfacePropertyComparer = ({ isReversed }: { isReversed: boolean }) 
   return isReversed ? (l: TypeElement, r: TypeElement) => -comparer(l, r) : comparer
 }
 
+const compareLiterals = (l: LiteralType, r: LiteralType): number => {
+  const a = typeof l
+  if (typeof l !== typeof r) {
+    // Decide the order according to the type
+    const lOrder = getLiteralTypeOrder(typeof l)
+    const rOrder = getLiteralTypeOrder(typeof r)
+    return lOrder - rOrder
+  } else if (typeof l === 'number' && typeof r === 'number') {
+    // Both number should compare in numerical order
+    return l - r
+  } else if (typeof l === 'string' && typeof r === 'string') {
+    // Both string should compare in alphabetical order
+    return l === r ? 0 : l < r ? -1 : 1
+  } else {
+    // Do not compare RegExp type
+    return 0
+  }
+}
+
 const makeArrayValueComparer = ({ isReversed, sourceCode }: { isReversed: boolean; sourceCode: SourceCode }) => {
   const fullText = sourceCode.getText()
 
   const comparer = (l: Element, r: Element) => {
     if (l.type === AST_NODE_TYPES.Literal && r.type === AST_NODE_TYPES.Literal) {
-      if (typeof l.value !== typeof r.value) {
-        // Number should place at left side
-        return getLiteralTypeOrder(typeof l.value) - getLiteralTypeOrder(typeof r.value)
-      } else if (typeof l.value === 'number' && typeof r.value === 'number') {
-        // Both number should compare with numeric
-        return l.value - r.value
-      } else if (typeof l.value === 'string' && typeof r.value === 'string') {
-        // Both string should compare in dictionary order
-        return l.value < r.value ? -1 : 1
-      } else {
-        // Do not compare other types : bigint | boolean | RegExp
-        return 0
-      }
+      return compareLiterals(l.value, r.value)
     } else if (l.type === r.type) {
       // Identifier should compare name with dictionary order
       return fullText.slice(...l.range) < fullText.slice(...r.range) ? -1 : 1
