@@ -48,7 +48,23 @@ const pies = [1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 8, 9, 9]
 ```
 
 ## Configuration Guide
+
+### First
+
+Add `eslint-plugin-sort-annotation` dependency
+
+```
+npm install -D eslint-plugin-sort-annotation
+```
+or
+```
+yarn add -D eslint-plugin-sort-annotation
+```
+
+### Second
+
 You need setup .eslintrc.js or .eslintrc.json in your project
+
 ```js
 module.exports = {
   plugins: ['sort-annotation'], // Add 'sort-annotation' plugin to plugins
@@ -58,6 +74,10 @@ module.exports = {
   }
 }
 ```
+
+### Finally
+
+Add `// @sort` or `// @sort-keys` comment to just above your code
 
 [npm-image]: http://img.shields.io/npm/v/eslint-plugin-sort-annotation.svg
 [npm-url]: https://npmjs.org/package/eslint-plugin-sort-annotation
