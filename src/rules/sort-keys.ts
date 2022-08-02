@@ -10,7 +10,7 @@ type Options = []
 type MessageIds = 'hasUnsortedKeys'
 
 export default createRule<Options, MessageIds>({
-  name: 'sort-variable-keys',
+  name: 'sort-keys',
   meta: {
     docs: {
       description: 'Sort keys in object or array',

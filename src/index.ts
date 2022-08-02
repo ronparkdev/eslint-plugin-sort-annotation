@@ -1,6 +1,6 @@
-import sortedKeys from './rules/sort-variable-keys'
+import sortedKeys from './rules/sort-keys'
 
 // Import all rules in lib/rules
 module.exports.rules = {
-  'sort-variable-keys': sortedKeys,
+  'sort-keys': sortedKeys,
 }

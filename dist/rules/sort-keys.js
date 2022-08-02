@@ -5,7 +5,7 @@ const array_1 = require("../utils/array");
 const comparer_1 = require("../utils/comparer");
 const createRule_1 = require("../utils/createRule");
 exports.default = (0, createRule_1.createRule)({
-    name: 'sort-variable-keys',
+    name: 'sort-keys',
     meta: {
         docs: {
             description: 'Sort keys in object or array',
@@ -14,35 +14,13 @@ exports.default = (0, createRule_1.createRule)({
         },
         fixable: 'code',
         type: 'suggestion',
-        schema: [
-            {
-                type: 'object',
-                properties: {
-                    sortKeysOfObject: {
-                        description: 'Sort keys in object',
-                        type: 'boolean',
-                        default: true,
-                    },
-                    sortKeysOfArray: {
-                        description: 'Sort keys in array',
-                        type: 'boolean',
-                        default: true,
-                    },
-                },
-                additionalProperties: false,
-            },
-        ],
+        schema: [],
         messages: {
             hasUnsortedKeys: `has unsorted keys`,
         },
     },
-    defaultOptions: [
-        {
-            sortKeysOfObject: true,
-            sortKeysOfArray: true,
-        },
-    ],
-    create(context, [options]) {
+    defaultOptions: [],
+    create(context) {
         const sourceCode = context.getSourceCode();
         const getConfig = (commentEndLine) => {
             const matchedComment = sourceCode
