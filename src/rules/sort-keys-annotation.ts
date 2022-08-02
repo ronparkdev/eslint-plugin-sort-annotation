@@ -64,6 +64,44 @@ export default createRule<Options, MessageIds>({
           })
         }
       },
+      TSInterfaceDeclaration(node): void {
+        const commentExpectedEndLine = node.loc.start.line - 1
+
+        const config = ConfigUtils.getConfig(sourceCode, '@sort-keys', commentExpectedEndLine)
+
+        if (!config) {
+          return
+        }
+
+        const { isReversed } = config
+
+        const comparer = ComparerUtils.makeInterfacePropertyComparer({ isReversed })
+
+        const properties = node.body.body
+
+        const sortedProperties = [...properties].sort(comparer)
+
+        const needSort = ArrayUtils.zip2(properties, sortedProperties).some(
+          ([property, sortedProperty]) => property !== sortedProperty,
+        )
+
+        if (needSort) {
+          const diffRanges = ArrayUtils.zip2(properties, sortedProperties).map(([from, to]) => ({
+            from: from.range,
+            to: to.range,
+          }))
+
+          const fixedText = FixUtils.getFixedText(sourceCode, node.range, diffRanges)
+
+          context.report({
+            node,
+            messageId: 'hasUnsortedKeys',
+            fix(fixer) {
+              return fixer.replaceTextRange(node.range, fixedText)
+            },
+          })
+        }
+      },
     }
   },
 })

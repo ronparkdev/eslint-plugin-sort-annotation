@@ -1,4 +1,9 @@
-import { Expression, SpreadElement, ObjectLiteralElement } from '@typescript-eslint/types/dist/generated/ast-spec'
+import {
+  Expression,
+  SpreadElement,
+  ObjectLiteralElement,
+  TypeElement,
+} from '@typescript-eslint/types/dist/generated/ast-spec'
 import { AST_NODE_TYPES } from '@typescript-eslint/utils'
 import { SourceCode } from '@typescript-eslint/utils/dist/ts-eslint'
 
@@ -45,6 +50,33 @@ const makeObjectComparer = ({ isReversed }: { isReversed: boolean }) => {
   return isReversed ? (l: ObjectLiteralElement, r: ObjectLiteralElement) => -comparer(l, r) : comparer
 }
 
+const makeInterfacePropertyComparer = ({ isReversed }: { isReversed: boolean }) => {
+  const comparer = (l: TypeElement, r: TypeElement) => {
+    if (l.type === AST_NODE_TYPES.TSPropertySignature && r.type === AST_NODE_TYPES.TSPropertySignature) {
+      if (l.key.type === AST_NODE_TYPES.Literal && r.key.type === AST_NODE_TYPES.Literal) {
+        // Both string should compare in dictionary order
+        return l.key.value < r.key.value ? -1 : 1
+      } else if (l.key.type === AST_NODE_TYPES.Identifier && r.key.type === AST_NODE_TYPES.Identifier) {
+        // Computed key should place at right side (ex: { [KEY]: value })
+        if (l.computed !== r.computed) {
+          return l.computed ? 1 : -1
+        }
+
+        // Both string should compare in dictionary order
+        return l.key.name < r.key.name ? -1 : 1
+      } else {
+        // Other types should sort as [AST_NODE_TYPES.Literal, AST_NODE_TYPES.Identifier, AST_NODE_TYPES.MemberExpression, others]
+        return getAstNodeTypeOrder(l.key.type) - getAstNodeTypeOrder(r.key.type)
+      }
+    } else {
+      // Do not judge of keys order if cannot compare
+      return 0
+    }
+  }
+
+  return isReversed ? (l: TypeElement, r: TypeElement) => -comparer(l, r) : comparer
+}
+
 const makeArrayComparer = ({ isReversed, sourceCode }: { isReversed: boolean; sourceCode: SourceCode }) => {
   const fullText = sourceCode.getText()
 
@@ -79,4 +111,5 @@ const makeArrayComparer = ({ isReversed, sourceCode }: { isReversed: boolean; so
 export const ComparerUtils = {
   makeObjectComparer,
   makeArrayComparer,
+  makeInterfacePropertyComparer,
 }
