@@ -3,10 +3,10 @@ function noNeedModifyCases() {
   const B = 'B'
   const C = 'C'
 
-  // @sort-keys
+  // @sort
   const array = [1, 2, 3, 11, 12, 13, '1', '11', '2', '22', '3', '33', 'a', 'b', 'c', A, B, C]
 
-  // @sort-keys:reversed
+  // @sort:reversed
   const reversedArray = [C, B, A, 'c', 'b', 'a', '33', '3', '22', '2', '11', '1', 13, 12, 11, 3, 2, 1]
 
   // @sort-keys
@@ -42,12 +42,12 @@ function noNeedModifyCases() {
   }
 
   /*
-    @sort-keys
+    @sort
   */
   const simpleArray = [1, 2]
 
   /*
-    @sort-keys:reversed
+    @sort:reversed
   */
   const reversedSimpleArray = [2, 1]
 }
@@ -57,10 +57,10 @@ function needLintCases() {
   const B = 'B'
   const C = 'C'
 
-  // @sort-keys
+  // @sort
   const array = [C, B, A, 'c', 'b', 'a', '33', '3', '22', '2', '11', '1', 13, 12, 11, 3, 2, 1]
 
-  // @sort-keys:reversed
+  // @sort:reversed
   const reversedArray = [1, 2, 3, 11, 12, 13, '1', '11', '2', '22', '3', '33', 'a', 'b', 'c', A, B, C]
 
   // @sort-keys
@@ -96,12 +96,12 @@ function needLintCases() {
   }
 
   /*
-    @sort-keys
+    @sort
   */
   const simpleArray = [2, 1]
 
   /*
-    @sort-keys:reversed
+    @sort:reversed
   */
   const reversedSimpleArray = [1, 2]
 }
