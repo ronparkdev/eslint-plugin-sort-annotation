@@ -1,8 +1,9 @@
 import { Expression, SpreadElement, ObjectLiteralElement } from '@typescript-eslint/types/dist/generated/ast-spec'
 import { AST_NODE_TYPES } from '@typescript-eslint/utils'
+import { SourceCode } from '@typescript-eslint/utils/dist/ts-eslint'
 
 export const getAstNodeTypeOrder = (type: AST_NODE_TYPES) => {
-  const order = [AST_NODE_TYPES.Literal, AST_NODE_TYPES.Identifier].indexOf(type)
+  const order = [AST_NODE_TYPES.Literal, AST_NODE_TYPES.Identifier, AST_NODE_TYPES.MemberExpression].indexOf(type)
   const END_OF_ORDER = 2
   return order === -1 ? END_OF_ORDER : order
 }
@@ -44,7 +45,9 @@ const makeObjectComparer = ({ isReversed }: { isReversed: boolean }) => {
   return isReversed ? (l: ObjectLiteralElement, r: ObjectLiteralElement) => -comparer(l, r) : comparer
 }
 
-const makeArrayComparer = ({ isReversed }: { isReversed: boolean }) => {
+const makeArrayComparer = ({ isReversed, sourceCode }: { isReversed: boolean; sourceCode: SourceCode }) => {
+  const fullText = sourceCode.getText()
+
   const comparer = (l: Element, r: Element) => {
     if (l.type === AST_NODE_TYPES.Literal && r.type === AST_NODE_TYPES.Literal) {
       if (typeof l.value !== typeof r.value) {
@@ -60,15 +63,13 @@ const makeArrayComparer = ({ isReversed }: { isReversed: boolean }) => {
         // Do not compare other types : bigint | boolean | RegExp
         return 0
       }
-    } else if (l.type === AST_NODE_TYPES.Identifier && r.type === AST_NODE_TYPES.Identifier) {
+    } else if (l.type === r.type) {
       // Identifier should compare name with dictionary order
-      return l.name < r.name ? -1 : 1
-    } else if (l.type !== r.type) {
+      return fullText.slice(...l.range) < fullText.slice(...r.range) ? -1 : 1
+    } else {
+      // l.type !== r.type
       // Other types should sort as [AST_NODE_TYPES.Literal, AST_NODE_TYPES.Identifier, others]
       return getAstNodeTypeOrder(l.type) - getAstNodeTypeOrder(r.type)
-    } else {
-      // Do not judge of values order if they are same type and cannot compare
-      return 0
     }
   }
 
