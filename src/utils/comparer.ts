@@ -85,6 +85,9 @@ const compareLiterals = (l: LiteralType, r: LiteralType): number => {
     const lOrder = getLiteralTypeOrder(typeof l)
     const rOrder = getLiteralTypeOrder(typeof r)
     return lOrder - rOrder
+  } else if (typeof l === 'boolean' && typeof r === 'boolean') {
+    // False should be on the left
+    return l === r ? 0 : r ? -1 : 1
   } else if (typeof l === 'number' && typeof r === 'number') {
     // Both number should compare in numerical order
     return l - r
