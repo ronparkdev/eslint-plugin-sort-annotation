@@ -15,7 +15,7 @@ type Options = [
 type MessageIds = 'hasUnsortedKeys'
 
 export default createRule<Options, MessageIds>({
-  name: 'sorted-keys',
+  name: 'sort-variable-keys',
   meta: {
     docs: {
       description: 'Sort keys in object or array',
@@ -68,7 +68,7 @@ export default createRule<Options, MessageIds>({
       const matchedCommentLineString = matchedComment.value
         .split('\n')
         .map((lineString) => lineString.trim())
-        .find((lineString) => lineString.startsWith('@sorted-keys'))
+        .find((lineString) => lineString.startsWith('@sort-keys'))
 
       if (!matchedCommentLineString) {
         return null

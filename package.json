@@ -1,6 +1,6 @@
 {
-  "name": "eslint-plugin-sorted-keys",
-  "version": "1.0.2",
+  "name": "eslint-plugin-sort-variable-keys",
+  "version": "1.0.0",
   "description": "Lint rule to autofix unsorted object's keys or array",
   "main": "dist/index.js",
   "scripts": {
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ronpark-dev/eslint-plugin-sorted-keys.git"
+    "url": "git+https://github.com/ronpark-dev/eslint-plugin-sort-variable-keys.git"
   },
   "keywords": [
     "eslint",
@@ -26,10 +26,10 @@
   "author": "Sang Min Park (ronpark-dev)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ronpark-dev/eslint-plugin-sorted-keys/issues",
+    "url": "https://github.com/ronpark-dev/eslint-plugin-sort-variable-keys/issues",
     "email": "ronpark.dev@gmail.com"
   },
-  "homepage": "https://github.com/ronpark-dev/eslint-plugin-sorted-keys#readme",
+  "homepage": "https://github.com/ronpark-dev/eslint-plugin-sort-variable-keys#readme",
   "devDependencies": {
     "@types/eslint": "^8.4.2",
     "@typescript-eslint/eslint-plugin": "^5.31.0",
