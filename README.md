@@ -38,7 +38,7 @@ const nameToAgeMap = {
 
 ### Before apply annotation
 ```javascript
-const pies = [
+const names = [
   'Liam',
   'Noah',
   'Jackson',
@@ -53,7 +53,7 @@ const pies = [
 ### After apply annotation (Autofix by lint)
 ```javascript
 // @sort
-const pies = [
+const names = [
   'Aiden',
   'Elijah',
   'Grayson',
