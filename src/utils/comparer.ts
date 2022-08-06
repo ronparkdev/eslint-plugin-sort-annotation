@@ -5,6 +5,7 @@ import {
   TypeElement,
   PropertyComputedName,
   PropertyNonComputedName,
+  TSPropertySignature,
   TSPropertySignatureComputedName,
   TSPropertySignatureNonComputedName,
 } from '@typescript-eslint/types/dist/generated/ast-spec'
@@ -83,6 +84,14 @@ const makeInterfacePropertyComparer = ({ isReversed }: { isReversed: boolean }) 
   return isReversed ? (l: TypeElement, r: TypeElement) => -comparer(l, r) : comparer
 }
 
+const makeTypeLiteralPropertyComparer = ({ isReversed }: { isReversed: boolean }) => {
+  const comparer = (l: TSPropertySignature, r: TSPropertySignature) => {
+    return compareProperty(l, r)
+  }
+
+  return isReversed ? (l: TSPropertySignature, r: TSPropertySignature) => -comparer(l, r) : comparer
+}
+
 const compareLiterals = (l: LiteralType, r: LiteralType): number => {
   const a = typeof l
   if (typeof l !== typeof r) {
@@ -131,6 +140,7 @@ const makeArrayValueComparer = ({ isReversed, sourceCode }: { isReversed: boolea
 
 export const ComparerUtils = {
   makeObjectPropertyComparer,
+  makeTypeLiteralPropertyComparer,
   makeInterfacePropertyComparer,
   makeArrayValueComparer,
 }
