@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ronpark-dev/eslint-plugin-sort-annotation.git"
+    "url": "git+https://github.com/ronparkdev/eslint-plugin-sort-annotation.git"
   },
   "keywords": [
     "eslint",
@@ -23,13 +23,13 @@
     "modules",
     "autofix"
   ],
-  "author": "Sang Min Park (ronpark-dev)",
+  "author": "Sang Min Park (ronparkdev)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ronpark-dev/eslint-plugin-sort-annotation/issues",
+    "url": "https://github.com/ronparkdev/eslint-plugin-sort-annotation/issues",
     "email": "ronpark.dev@gmail.com"
   },
-  "homepage": "https://github.com/ronpark-dev/eslint-plugin-sort-annotation#readme",
+  "homepage": "https://github.com/ronparkdev/eslint-plugin-sort-annotation#readme",
   "devDependencies": {
     "@types/eslint": "^8.4.2",
     "@typescript-eslint/eslint-plugin": "^5.31.0",

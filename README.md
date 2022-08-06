@@ -100,5 +100,5 @@ Add `// @sort` or `// @sort-keys` comment to just above your code
 [npm-image]: http://img.shields.io/npm/v/eslint-plugin-sort-annotation.svg
 [npm-url]: https://npmjs.org/package/eslint-plugin-sort-annotation
 
-[build-image]: http://img.shields.io/github/workflow/status/ronpark-dev/eslint-plugin-sort-annotation/Build%20and%20unit%20test.svg
-[build-url]: https://github.com/ronpark-dev/eslint-plugin-sort-annotation/actions/workflows/ci.yml
+[build-image]: http://img.shields.io/github/workflow/status/ronparkdev/eslint-plugin-sort-annotation/Build%20and%20unit%20test.svg
+[build-url]: https://github.com/ronparkdev/eslint-plugin-sort-annotation/actions/workflows/ci.yml
