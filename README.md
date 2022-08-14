@@ -1,101 +1,42 @@
-# sort-annotation
+# eslint-plugin-sort-annotation
 [![NPM version][npm-image]][npm-url] [![Build Status][build-image]][build-url]
 
-The rule autofix that not sorted object's key or array 
+An ESLint plugin for sorting interface properties, object keys and array values if code has annotation. Rules support *auto fix* and Typescript also.
 
-## Sort Object's keys with `sort-annotation/sort-keys` rule
+# Installation
+You’ll first need to install ESLint;
+```
+npm i eslint --save-dev
+```
 
-### Before apply annotation
+Next, install `eslint-plugin-sort-annotation`:
+```
+npm i eslint-plugin-sort-annotation --save-dev
+```
+
+# Usage
+Here’s a suggested ESLint configuration that:
 ```javascript
-const nameToAgeMap = {
-  Liam: 36,
-  Noah: 21,
-  Jackson: 15,
-  Aiden: 62,
-  Elijah: 17,
-  Grayson: 27,
-  Lucas: 43,
-  Oliver: 52,
-}
-```
-
-### After apply annotation (Autofix by lint)
-```javascript
-// @sort-keys
-const nameToAgeMap = {
-  Aiden: 62,
-  Elijah: 17,
-  Grayson: 27,
-  Jackson: 15,
-  Liam: 36,
-  Lucas: 43,
-  Noah: 21,
-  Oliver: 52,
-}
-```
-
-## Sort Array values with `sort-annotation/sort` rule
-
-### Before apply annotation
-```javascript
-const names = [
-  'Liam',
-  'Noah',
-  'Jackson',
-  'Aiden',
-  'Elijah',
-  'Grayson',
-  'Lucas',
-  'Oliver',
-]
-```
-
-### After apply annotation (Autofix by lint)
-```javascript
-// @sort
-const names = [
-  'Aiden',
-  'Elijah',
-  'Grayson',
-  'Jackson',
-  'Liam',
-  'Lucas',
-  'Noah',
-  'Oliver',
- ]
-```
-
-## Configuration Guide
-
-### First
-
-Add `eslint-plugin-sort-annotation` dependency
-
-```
-npm install -D eslint-plugin-sort-annotation
-```
-or
-```
-yarn add -D eslint-plugin-sort-annotation
-```
-
-### Second
-
-You need setup .eslintrc.js or .eslintrc.json in your project
-
-```js
-module.exports = {
-  plugins: ['sort-annotation'], // Add 'sort-annotation' plugin to plugins
-  rules: {
+{
+  "parserOptions": { ... }, // Nothing changed
+  "plugins": [..., "sort-annotation"], // Add 'sort-annotation' next to old plugins
+  "rules": {
+    ...
+    // Add below rules next to old rules 
     'sort-annotation/sort-keys': 'error',
     'sort-annotation/sort': 'error',
   }
 }
 ```
 
-### Finally
+# Supported Rules
+* [`sort-keys`](https://github.com/ronparkdev/eslint-plugin-sort-annotation/blob/master/documents/sort-keys.md) : Sort interface properties or object keys if has `@sort-keys` annotation
 
-Add `// @sort` or `// @sort-keys` comment to just above your code
+* [`sort`](https://github.com/ronparkdev/eslint-plugin-sort-annotation/blob/master/documents/sort.md) : Sort array values if has `@sort` annotation
+
+# License
+BSD License
+
 
 [npm-image]: http://img.shields.io/npm/v/eslint-plugin-sort-annotation.svg
 [npm-url]: https://npmjs.org/package/eslint-plugin-sort-annotation
