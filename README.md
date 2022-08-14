@@ -16,13 +16,13 @@ npm i eslint-plugin-sort-annotation --save-dev
 
 # Usage
 Here’s a suggested ESLint configuration that:
-```json
+```javascript
 {
-	"parserOptions": { ... }, // Nothing changed
+  "parserOptions": { ... }, // Nothing changed
   "plugins": [..., "sort-annotation"], // Add 'sort-annotation' next to old plugins
-  rules: {
-	  ...
-	  // Add below rules next to old rules 
+  "rules": {
+    ...
+    // Add below rules next to old rules 
     'sort-annotation/sort-keys': 'error',
     'sort-annotation/sort': 'error',
   }
