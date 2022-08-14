@@ -4,7 +4,7 @@
 An ESLint plugin for sorting interface properties, object keys and array values if code has annotation. Rules support *auto fix* and Typescript also.
 
 # Installation
-You’ll first need to install ESLint;
+You’ll first need to install ESLint:
 ```
 npm i eslint --save-dev
 ```
