@@ -3,6 +3,14 @@
 
 An ESLint plugin for sorting interface properties, object keys and array values if code has annotation. Rules support *auto fix* and Typescript also.
 
+
+| `sort-annotation/sort` | `sort-annotation/sort-keys` 
+|---|---|
+| ![1664532891](https://user-images.githubusercontent.com/47266692/193248649-75b881b7-3d15-407a-9bf2-7cca8a562532.gif) | ![1664532549](https://user-images.githubusercontent.com/47266692/193247765-b6398fa5-a6f3-4d7a-932b-ed635125bbee.gif) |
+
+
+
+
 # Installation
 You’ll first need to install ESLint:
 ```
