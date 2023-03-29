@@ -8,6 +8,7 @@
     "clean": "rm -rf dist",
     "format": "prettier --write src/**/*.ts",
     "test": "jest",
+    "test:watch": "jest --watch",
     "prepare": "husky install"
   },
   "repository": {
