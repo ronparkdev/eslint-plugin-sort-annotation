@@ -20,10 +20,30 @@ const getConfig = (sourceCode: SourceCode, annotationName: string, commentEndLin
     return null
   }
 
-  const isReversed = matchedCommentLineString.includes(':reversed')
+  const options = matchedCommentLineString.split(':')
+
+  const isReversed = options.includes('reversed')
+  const deepLevel = (() => {
+    const matchedExecResult = options
+      .map((option) => /deep(\((\d+)\))?/.exec(option))
+      .find((execResult) => !!execResult)
+
+    if (!matchedExecResult) {
+      return 1 // deep option is not matched
+    }
+
+    const level = parseInt(matchedExecResult[2], 10)
+
+    if (isNaN(level)) {
+      return Number.MAX_SAFE_INTEGER // infinity deep sorting
+    }
+
+    return level
+  })()
 
   return {
     isReversed,
+    deepLevel,
   }
 }
 
