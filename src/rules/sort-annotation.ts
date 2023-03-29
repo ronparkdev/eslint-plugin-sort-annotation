@@ -6,7 +6,9 @@ import { FixUtils } from '../utils/fix'
 
 type Options = []
 
-type MessageIds = 'hasUnsortedKeys'
+export const HAS_UNSORTED_KEYS_MESSAGE_ID = 'hasUnsortedKeys'
+
+type MessageIds = typeof HAS_UNSORTED_KEYS_MESSAGE_ID
 
 export default createRule<Options, MessageIds>({
   name: 'sort-annotation',
@@ -20,7 +22,7 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     schema: [],
     messages: {
-      hasUnsortedKeys: `has unsorted keys`,
+      [HAS_UNSORTED_KEYS_MESSAGE_ID]: `has unsorted keys`,
     },
   },
   defaultOptions: [],
@@ -57,7 +59,7 @@ export default createRule<Options, MessageIds>({
 
           context.report({
             node,
-            messageId: 'hasUnsortedKeys',
+            messageId: HAS_UNSORTED_KEYS_MESSAGE_ID,
             fix(fixer) {
               return fixer.replaceTextRange(node.range, fixedText)
             },

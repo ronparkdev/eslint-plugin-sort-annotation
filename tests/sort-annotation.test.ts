@@ -4,7 +4,7 @@ import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils'
 
 const { RuleTester } = ESLintUtils
 
-import rule from '../src/rules/sort-annotation'
+import rule, { HAS_UNSORTED_KEYS_MESSAGE_ID } from '../src/rules/sort-annotation'
 
 const getFilename = (filePath: string): string => path.resolve('./tests', filePath)
 
@@ -79,12 +79,7 @@ ruleTester.run('sort-annotation', rule, {
       // @sort
       const array = [Type.B, Type.A, B, A, 'b', 'a', '22', '2', '11', '1', 12n, 11n, 2n, 1n, 12, 11, 2, 1, true, false]
       `,
-      errors: [
-        {
-          messageId: 'hasUnsortedKeys',
-          type: AST_NODE_TYPES.ArrayExpression,
-        },
-      ],
+      errors: [{ messageId: HAS_UNSORTED_KEYS_MESSAGE_ID, type: AST_NODE_TYPES.ArrayExpression }],
       output: `
       const A = 'A'
       const B = 'B'
@@ -104,12 +99,7 @@ ruleTester.run('sort-annotation', rule, {
       // @sort:reversed
       const reversedArray = [false, true, 1, 2, 11, 12, 1n, 2n, 11n, 12n, '1', '11', '2', '22', 'a', 'b', A, B, Type.A, Type.B]
       `,
-      errors: [
-        {
-          messageId: 'hasUnsortedKeys',
-          type: AST_NODE_TYPES.ArrayExpression,
-        },
-      ],
+      errors: [{ messageId: HAS_UNSORTED_KEYS_MESSAGE_ID, type: AST_NODE_TYPES.ArrayExpression }],
       output: `
       const A = 'A'
       const B = 'B'
@@ -125,12 +115,7 @@ ruleTester.run('sort-annotation', rule, {
       */
       const simpleArray = [2, 1]
       `,
-      errors: [
-        {
-          messageId: 'hasUnsortedKeys',
-          type: AST_NODE_TYPES.ArrayExpression,
-        },
-      ],
+      errors: [{ messageId: HAS_UNSORTED_KEYS_MESSAGE_ID, type: AST_NODE_TYPES.ArrayExpression }],
       output: `
       /*
         @sort
@@ -146,12 +131,7 @@ ruleTester.run('sort-annotation', rule, {
       */
       const reversedSimpleArray = [1, 2]
       `,
-      errors: [
-        {
-          messageId: 'hasUnsortedKeys',
-          type: AST_NODE_TYPES.ArrayExpression,
-        },
-      ],
+      errors: [{ messageId: HAS_UNSORTED_KEYS_MESSAGE_ID, type: AST_NODE_TYPES.ArrayExpression }],
       output: `
       /*
         @sort:reversed

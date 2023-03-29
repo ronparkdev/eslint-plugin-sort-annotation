@@ -4,7 +4,7 @@ import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils'
 
 const { RuleTester } = ESLintUtils
 
-import rule from '../src/rules/sort-keys-annotation'
+import rule, { HAS_UNSORTED_KEYS_MESSAGE_ID } from '../src/rules/sort-keys-annotation'
 
 const getFilename = (filePath: string): string => path.resolve('./tests', filePath)
 
@@ -110,12 +110,7 @@ ruleTester.run('sort-keys-annotation', rule, {
         '1': '1',
       }
       `,
-      errors: [
-        {
-          messageId: 'hasUnsortedKeys',
-          type: AST_NODE_TYPES.ObjectExpression,
-        },
-      ],
+      errors: [{ messageId: HAS_UNSORTED_KEYS_MESSAGE_ID, type: AST_NODE_TYPES.ObjectExpression }],
       output: `
       const A = 'A'
       const B = 'B'
@@ -149,12 +144,7 @@ ruleTester.run('sort-keys-annotation', rule, {
         [B]: 'B',
       }
       `,
-      errors: [
-        {
-          messageId: 'hasUnsortedKeys',
-          type: AST_NODE_TYPES.ObjectExpression,
-        },
-      ],
+      errors: [{ messageId: HAS_UNSORTED_KEYS_MESSAGE_ID, type: AST_NODE_TYPES.ObjectExpression }],
       output: `
       const A = 'A'
       const B = 'B'
@@ -188,12 +178,7 @@ ruleTester.run('sort-keys-annotation', rule, {
         '1': string
       }
       `,
-      errors: [
-        {
-          messageId: 'hasUnsortedKeys',
-          type: AST_NODE_TYPES.TSInterfaceDeclaration,
-        },
-      ],
+      errors: [{ messageId: HAS_UNSORTED_KEYS_MESSAGE_ID, type: AST_NODE_TYPES.TSInterfaceDeclaration }],
       output: `
       const A = 'A'
       const B = 'B'
@@ -227,12 +212,7 @@ ruleTester.run('sort-keys-annotation', rule, {
         [B]: string
       }
       `,
-      errors: [
-        {
-          messageId: 'hasUnsortedKeys',
-          type: AST_NODE_TYPES.TSInterfaceDeclaration,
-        },
-      ],
+      errors: [{ messageId: HAS_UNSORTED_KEYS_MESSAGE_ID, type: AST_NODE_TYPES.TSInterfaceDeclaration }],
       output: `
       const A = 'A'
       const B = 'B'
