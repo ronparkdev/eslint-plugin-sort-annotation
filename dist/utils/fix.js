@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FixUtils = void 0;
+const START = 0;
+const END = 1;
 const getFixedText = (sourceCode, nodeRange, diffRange) => {
-    const START = 0;
-    const END = 1;
     const allText = sourceCode.getText();
     const prefix = allText.slice(nodeRange[START], diffRange[0].from[START]);
     const postfix = allText.slice(diffRange[diffRange.length - 1].from[END], nodeRange[END]);

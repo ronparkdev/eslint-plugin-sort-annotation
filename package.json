@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-sort-annotation",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "Lint rule to autofix unsorted object's keys or array",
   "main": "dist/index.js",
   "scripts": {
@@ -8,6 +8,7 @@
     "clean": "rm -rf dist",
     "format": "prettier --write src/**/*.ts",
     "test": "jest",
+    "test:watch": "jest --watch",
     "prepare": "husky install"
   },
   "repository": {
@@ -31,26 +32,26 @@
   },
   "homepage": "https://github.com/ronparkdev/eslint-plugin-sort-annotation#readme",
   "devDependencies": {
-    "@types/eslint": "^8.4.2",
-    "@typescript-eslint/eslint-plugin": "^5.31.0",
-    "@typescript-eslint/parser": "^5.28.0",
-    "eslint": "^8.17.0",
+    "@types/eslint": "^8.21.3",
+    "@typescript-eslint/eslint-plugin": "^5.57.0",
+    "@typescript-eslint/parser": "^5.57.0",
+    "eslint": "^8.37.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.24.0",
-    "eslint-plugin-prettier": "^3.4.0",
-    "husky": "^8.0.1",
-    "jest": "^28.1.0",
-    "lint-staged": "^13.0.1",
-    "prettier": "2.6.2",
-    "ts-jest": "^28.0.3",
-    "typescript": "^4.7.4"
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.3",
+    "jest": "^28.1.3",
+    "lint-staged": "^13.2.0",
+    "prettier": "2.8.7",
+    "ts-jest": "^28.0.8",
+    "typescript": "^5.0.2"
   },
   "engines": {
     "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
   },
   "dependencies": {
-    "@typescript-eslint/utils": "^5.27.1"
+    "@typescript-eslint/utils": "^5.57.0"
   },
   "lint-staged": {
     "*.ts": "prettier --write"
