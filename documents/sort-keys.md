@@ -1,6 +1,12 @@
 # eslint-plugin-sort-annotation/sort-keys
 Sort interface properties or object keys if has `@sort-keys` annotation
 
+## Annotation options
+* `:reversed` : Use this option to sort in reverse
+* `:deep` : Use this option to sort by more than one depth
+  * `:deep` : By default, it sorts by depth regardless.
+  * `:deep(2)` : If you want to sort only to a certain depth, you need to include a depth value.
+
 ### Before apply annotation
 ```javascript
 const nameToAgeMap = {
