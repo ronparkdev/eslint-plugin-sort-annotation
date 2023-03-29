@@ -1,10 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.HAS_UNSORTED_KEYS_MESSAGE_ID = void 0;
 const array_1 = require("../utils/array");
 const comparer_1 = require("../utils/comparer");
 const config_1 = require("../utils/config");
 const createRule_1 = require("../utils/createRule");
 const fix_1 = require("../utils/fix");
+exports.HAS_UNSORTED_KEYS_MESSAGE_ID = 'hasUnsortedKeys';
 exports.default = (0, createRule_1.createRule)({
     name: 'sort-annotation',
     meta: {
@@ -17,7 +19,7 @@ exports.default = (0, createRule_1.createRule)({
         type: 'suggestion',
         schema: [],
         messages: {
-            hasUnsortedKeys: `has unsorted keys`,
+            [exports.HAS_UNSORTED_KEYS_MESSAGE_ID]: `has unsorted keys`,
         },
     },
     defaultOptions: [],
@@ -42,7 +44,7 @@ exports.default = (0, createRule_1.createRule)({
                     const fixedText = fix_1.FixUtils.getFixedText(sourceCode, node.range, diffRanges);
                     context.report({
                         node,
-                        messageId: 'hasUnsortedKeys',
+                        messageId: exports.HAS_UNSORTED_KEYS_MESSAGE_ID,
                         fix(fixer) {
                             return fixer.replaceTextRange(node.range, fixedText);
                         },
