@@ -22,6 +22,34 @@ ruleTester.run('sort-keys-annotation', rule, {
   valid: [
     {
       code: `
+      // @sort-keys
+      const object = { a: string, b: string, }
+      `,
+      filename: getFilename('main.ts'),
+    },
+    {
+      code: `
+      // @sort-keys
+      type object = { a: string, b: string, }
+      `,
+      filename: getFilename('main.ts'),
+    },
+    {
+      code: `
+      // @sort-keys
+      export const object = { a: string, b: string, }
+      `,
+      filename: getFilename('main.ts'),
+    },
+    {
+      code: `
+      // @sort-keys
+      export type object = { a: string, b: string, }
+      `,
+      filename: getFilename('main.ts'),
+    },
+    {
+      code: `
       const A = 'A'
       const B = 'B'
       // @sort-keys
@@ -58,6 +86,54 @@ ruleTester.run('sort-keys-annotation', rule, {
     },
   ],
   invalid: [
+    {
+      code: `
+      // @sort-keys
+      const object = { b: string, a: string, }
+      `,
+      errors: [{ messageId: HAS_UNSORTED_KEYS_MESSAGE_ID, type: AST_NODE_TYPES.ObjectExpression }],
+      output: `
+      // @sort-keys
+      const object = { a: string, b: string, }
+      `,
+      filename: getFilename('main.ts'),
+    },
+    {
+      code: `
+      // @sort-keys
+      type object = { b: string, a: string, }
+      `,
+      errors: [{ messageId: HAS_UNSORTED_KEYS_MESSAGE_ID, type: AST_NODE_TYPES.TSTypeLiteral }],
+      output: `
+      // @sort-keys
+      type object = { a: string, b: string, }
+      `,
+      filename: getFilename('main.ts'),
+    },
+    {
+      code: `
+      // @sort-keys
+      export const object = { b: string, a: string, }
+      `,
+      errors: [{ messageId: HAS_UNSORTED_KEYS_MESSAGE_ID, type: AST_NODE_TYPES.ObjectExpression }],
+      output: `
+      // @sort-keys
+      export const object = { a: string, b: string, }
+      `,
+      filename: getFilename('main.ts'),
+    },
+    {
+      code: `
+      // @sort-keys
+      export type object = { b: string, a: string, }
+      `,
+      errors: [{ messageId: HAS_UNSORTED_KEYS_MESSAGE_ID, type: AST_NODE_TYPES.TSTypeLiteral }],
+      output: `
+      // @sort-keys
+      export type object = { a: string, b: string, }
+      `,
+      filename: getFilename('main.ts'),
+    },
     {
       code: `
       const A = 'A'
@@ -108,7 +184,7 @@ ruleTester.run('sort-keys-annotation', rule, {
         '1': string
       }
       `,
-      errors: [{ messageId: HAS_UNSORTED_KEYS_MESSAGE_ID, type: AST_NODE_TYPES.TSInterfaceDeclaration }],
+      errors: [{ messageId: HAS_UNSORTED_KEYS_MESSAGE_ID, type: AST_NODE_TYPES.TSInterfaceBody }],
       output: `
       const A = 'A'
       const B = 'B'

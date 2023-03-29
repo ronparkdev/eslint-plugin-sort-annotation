@@ -108,7 +108,7 @@ ruleTester.run('sort-keys-annotation', rule, {
         [B]: string
       }
       `,
-      errors: [{ messageId: HAS_UNSORTED_KEYS_MESSAGE_ID, type: AST_NODE_TYPES.TSInterfaceDeclaration }],
+      errors: [{ messageId: HAS_UNSORTED_KEYS_MESSAGE_ID, type: AST_NODE_TYPES.TSInterfaceBody }],
       output: `
       const A = 'A'
       const B = 'B'
