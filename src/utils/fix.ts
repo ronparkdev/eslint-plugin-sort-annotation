@@ -1,10 +1,10 @@
 import { Range } from '@typescript-eslint/types/dist/generated/ast-spec'
 import { SourceCode } from '@typescript-eslint/utils/dist/ts-eslint'
 
-const getFixedText = (sourceCode: SourceCode, nodeRange: Range, diffRange: { from: Range; to: Range }[]) => {
-  const START = 0
-  const END = 1
+const START = 0
+const END = 1
 
+const getFixedText = (sourceCode: SourceCode, nodeRange: Range, diffRange: { from: Range; to: Range }[]) => {
   const allText = sourceCode.getText()
 
   const prefix = allText.slice(nodeRange[START], diffRange[0].from[START])
