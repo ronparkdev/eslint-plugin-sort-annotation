@@ -8,7 +8,7 @@ import {
   TSPropertySignatureComputedName,
   TSPropertySignatureNonComputedName,
 } from '@typescript-eslint/types/dist/generated/ast-spec'
-import { AST_NODE_TYPES } from '@typescript-eslint/utils'
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils'
 import { SourceCode } from '@typescript-eslint/utils/dist/ts-eslint'
 
 type Element = Expression | SpreadElement
@@ -129,8 +129,25 @@ const makeArrayValueComparer = ({ isReversed, sourceCode }: { isReversed: boolea
   return isReversed ? (l: Element, r: Element) => -comparer(l, r) : comparer
 }
 
+const makeEnumMemberComparer = ({ isReversed }: { isReversed: boolean }) => {
+  const comparer = (l: TSESTree.TSEnumMember, r: TSESTree.TSEnumMember) => {
+    if (l.id.type === AST_NODE_TYPES.Literal && r.id.type === AST_NODE_TYPES.Literal) {
+      return compareLiterals(l.id.value, r.id.value)
+    } else if (l.id.type === AST_NODE_TYPES.Identifier && r.id.type === AST_NODE_TYPES.Identifier) {
+      // Both string should compare in alphabetical order
+      return l.id.name === r.id.name ? 0 : l.id.name < r.id.name ? -1 : 1
+    } else {
+      // Other types should sort as [AST_NODE_TYPES.Literal, AST_NODE_TYPES.Identifier, others]
+      return getAstNodeTypeOrder(l.id.type) - getAstNodeTypeOrder(r.id.type)
+    }
+  }
+
+  return isReversed ? (l: TSESTree.TSEnumMember, r: TSESTree.TSEnumMember) => -comparer(l, r) : comparer
+}
+
 export const ComparerUtils = {
   makeObjectPropertyComparer,
   makeInterfacePropertyComparer,
   makeArrayValueComparer,
+  makeEnumMemberComparer,
 }

@@ -50,6 +50,27 @@ ruleTester.run('sort-keys-annotation', rule, {
     },
     {
       code: `
+      // @sort-keys
+      enum Keys {
+        A = 'A',
+        B = 'B',
+      }
+      `,
+      filename: getFilename('main.ts'),
+    },
+    {
+      code: `
+      // @sort-keys
+      enum Keys {
+        A,
+        B,
+        C = 1,
+      }
+      `,
+      filename: getFilename('main.ts'),
+    },
+    {
+      code: `
       const A = 'A'
       const B = 'B'
       // @sort-keys
@@ -131,6 +152,44 @@ ruleTester.run('sort-keys-annotation', rule, {
       output: `
       // @sort-keys
       export type object = { a: string, b: string, }
+      `,
+      filename: getFilename('main.ts'),
+    },
+    {
+      code: `
+      // @sort-keys
+      enum Keys {
+        B = 'B',
+        A = 'A',
+      }
+      `,
+      errors: [{ messageId: HAS_UNSORTED_KEYS_MESSAGE_ID, type: AST_NODE_TYPES.TSEnumDeclaration }],
+      output: `
+      // @sort-keys
+      enum Keys {
+        A = 'A',
+        B = 'B',
+      }
+      `,
+      filename: getFilename('main.ts'),
+    },
+    {
+      code: `
+      // @sort-keys
+      enum Keys {
+        B,
+        C = 1,
+        A,
+      }
+      `,
+      errors: [{ messageId: HAS_UNSORTED_KEYS_MESSAGE_ID, type: AST_NODE_TYPES.TSEnumDeclaration }],
+      output: `
+      // @sort-keys
+      enum Keys {
+        A,
+        B,
+        C = 1,
+      }
       `,
       filename: getFilename('main.ts'),
     },
