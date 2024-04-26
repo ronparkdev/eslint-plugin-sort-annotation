@@ -4,6 +4,8 @@ function noNeedModifyCases() {
   enum Type {
     A = 'A',
     B = 'B',
+    C = 'C',
+    D = 'D',
   }
 
   // @sort
@@ -43,10 +45,14 @@ function noNeedModifyCases() {
     b: 'b',
     [A]: 'A',
     [B]: 'B',
+    [Type.C]: 'C',
+    [Type.D]: 'D',
   }
 
   // @sort-keys:reversed
   const reversedObject = {
+    [Type.D]: 'D',
+    [Type.C]: 'C',
     [B]: 'B',
     [A]: 'A',
     b: 'b',
@@ -77,10 +83,14 @@ function noNeedModifyCases() {
     b: string
     [A]: string
     [B]: string
+    [Type.C]: string
+    [Type.D]: string
   }
 
   // @sort-keys:reversed
   interface ReversedMockInterface {
+    [Type.D]: string
+    [Type.C]: string
     [B]: string
     [A]: string
     b: string
@@ -98,6 +108,8 @@ function needLintCases() {
   enum Type {
     A = 'A',
     B = 'B',
+    C = 'C',
+    D = 'D',
   }
 
   // @sort
@@ -131,6 +143,8 @@ function needLintCases() {
   const object = {
     [B]: 'B',
     [A]: 'A',
+    [Type.D]: 'D',
+    [Type.C]: 'C',
     b: 'b',
     a: 'a',
     '22': '22',
@@ -149,6 +163,8 @@ function needLintCases() {
     b: 'b',
     [A]: 'A',
     [B]: 'B',
+    [Type.D]: 'D',
+    [Type.C]: 'C',
   }
 
   /*
@@ -171,6 +187,8 @@ function needLintCases() {
     '2': string
     '11': string
     '1': string
+    [Type.D]: string
+    [Type.C]: string
   }
 
   // @sort-keys:reversed
@@ -183,5 +201,7 @@ function needLintCases() {
     b: string
     [A]: string
     [B]: string
+    [Type.C]: string
+    [Type.D]: string
   }
 }

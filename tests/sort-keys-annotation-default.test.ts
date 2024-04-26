@@ -83,6 +83,8 @@ ruleTester.run('sort-keys-annotation', rule, {
         b: 'b',
         [A]: 'A',
         [B]: 'B',
+        [Type.C]: 'C',
+        [Type.D]: 'D',
       }
       `,
       filename: getFilename('main.ts'),
@@ -101,7 +103,24 @@ ruleTester.run('sort-keys-annotation', rule, {
         b: string
         [A]: string
         [B]: string
+        [Type.C]: string
+        [Type.D]: string
       }
+      `,
+      filename: getFilename('main.ts'),
+    },
+    {
+      code: `
+      enum AKeys {
+        A = 'A',
+        B = 'B',
+      }
+      enum BKeys {
+        A = 'A',
+        B = 'B',
+      }
+      // @sort-keys
+      const object = { [AKeys.A]: string, [AKeys.B]: string, [BKeys.B]: string, [BKeys.B]: string, }
       `,
       filename: getFilename('main.ts'),
     },
@@ -199,6 +218,8 @@ ruleTester.run('sort-keys-annotation', rule, {
       const B = 'B'
       // @sort-keys
       const object = {
+        [Type.D]: 'D',
+        [Type.C]: 'C',
         [B]: 'B',
         [A]: 'A',
         b: 'b',
@@ -223,6 +244,8 @@ ruleTester.run('sort-keys-annotation', rule, {
         b: 'b',
         [A]: 'A',
         [B]: 'B',
+        [Type.C]: 'C',
+        [Type.D]: 'D',
       }
       `,
       filename: getFilename('main.ts'),
@@ -233,6 +256,8 @@ ruleTester.run('sort-keys-annotation', rule, {
       const B = 'B'
       // @sort-keys
       interface MockInterface {
+        [Type.D]: string
+        [Type.C]: string
         [B]: string
         [A]: string
         b: string
@@ -257,7 +282,37 @@ ruleTester.run('sort-keys-annotation', rule, {
         b: string
         [A]: string
         [B]: string
+        [Type.C]: string
+        [Type.D]: string
       }
+      `,
+      filename: getFilename('main.ts'),
+    },
+    {
+      code: `
+      enum AKeys {
+        A = 'A',
+        B = 'B',
+      }
+      enum BKeys {
+        A = 'A',
+        B = 'B',
+      }
+      // @sort-keys
+      const object = { [AKeys.A]: string, [BKeys.A]: string, [AKeys.B]: string, [BKeys.B]: string, }
+      `,
+      errors: [{ messageId: HAS_UNSORTED_KEYS_MESSAGE_ID, type: AST_NODE_TYPES.ObjectExpression }],
+      output: `
+      enum AKeys {
+        A = 'A',
+        B = 'B',
+      }
+      enum BKeys {
+        A = 'A',
+        B = 'B',
+      }
+      // @sort-keys
+      const object = { [AKeys.A]: string, [AKeys.B]: string, [BKeys.A]: string, [BKeys.B]: string, }
       `,
       filename: getFilename('main.ts'),
     },

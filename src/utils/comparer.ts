@@ -49,6 +49,30 @@ const compareProperty = <
     const rKey = r.key.name
     // Both string should compare in alphabetical order
     return lKey === rKey ? 0 : lKey < rKey ? -1 : 1
+  } else if (
+    l.key.type === AST_NODE_TYPES.MemberExpression &&
+    r.key.type === AST_NODE_TYPES.MemberExpression &&
+    l.key.object.type === AST_NODE_TYPES.Identifier &&
+    r.key.object.type === AST_NODE_TYPES.Identifier &&
+    (l.key.property.type === AST_NODE_TYPES.Identifier || l.key.property.type === AST_NODE_TYPES.PrivateIdentifier) &&
+    (r.key.property.type === AST_NODE_TYPES.Identifier || r.key.property.type === AST_NODE_TYPES.PrivateIdentifier)
+  ) {
+    // Computed key should place at right side (ex: { [obj.KEY]: value })
+    if (l.computed !== r.computed) {
+      return l.computed ? 1 : -1
+    }
+
+    // First compare object name
+    const lObject = l.key.object.name
+    const rObject = r.key.object.name
+    if (lObject !== rObject) {
+      return lObject < rObject ? -1 : 1
+    }
+
+    // Then compare property name
+    const lKey = l.key.property.name
+    const rKey = r.key.property.name
+    return lKey === rKey ? 0 : lKey < rKey ? -1 : 1
   } else {
     // Other types should sort as [AST_NODE_TYPES.Literal, AST_NODE_TYPES.Identifier, AST_NODE_TYPES.MemberExpression, others]
     const lOrder = getAstNodeTypeOrder(l.key.type)
