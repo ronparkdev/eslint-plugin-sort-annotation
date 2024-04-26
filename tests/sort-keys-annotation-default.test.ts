@@ -62,6 +62,8 @@ ruleTester.run('sort-keys-annotation', rule, {
         b: 'b',
         [A]: 'A',
         [B]: 'B',
+        [Type.C]: 'C',
+        [Type.D]: 'D',
       }
       `,
       filename: getFilename('main.ts'),
@@ -80,6 +82,8 @@ ruleTester.run('sort-keys-annotation', rule, {
         b: string
         [A]: string
         [B]: string
+        [Type.C]: string
+        [Type.D]: string
       }
       `,
       filename: getFilename('main.ts'),
@@ -155,6 +159,8 @@ ruleTester.run('sort-keys-annotation', rule, {
       const B = 'B'
       // @sort-keys
       const object = {
+        [Type.D]: 'D',
+        [Type.C]: 'C',
         [B]: 'B',
         [A]: 'A',
         b: 'b',
@@ -179,6 +185,8 @@ ruleTester.run('sort-keys-annotation', rule, {
         b: 'b',
         [A]: 'A',
         [B]: 'B',
+        [Type.C]: 'C',
+        [Type.D]: 'D',
       }
       `,
       filename: getFilename('main.ts'),
@@ -189,6 +197,8 @@ ruleTester.run('sort-keys-annotation', rule, {
       const B = 'B'
       // @sort-keys
       interface MockInterface {
+        [Type.D]: string
+        [Type.C]: string
         [B]: string
         [A]: string
         b: string
@@ -213,6 +223,8 @@ ruleTester.run('sort-keys-annotation', rule, {
         b: string
         [A]: string
         [B]: string
+        [Type.C]: string
+        [Type.D]: string
       }
       `,
       filename: getFilename('main.ts'),
