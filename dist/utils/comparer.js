@@ -22,6 +22,24 @@ const compareProperty = (l, r) => {
         const rKey = r.key.name;
         return lKey === rKey ? 0 : lKey < rKey ? -1 : 1;
     }
+    else if (l.key.type === utils_1.AST_NODE_TYPES.MemberExpression &&
+        r.key.type === utils_1.AST_NODE_TYPES.MemberExpression &&
+        l.key.object.type === utils_1.AST_NODE_TYPES.Identifier &&
+        r.key.object.type === utils_1.AST_NODE_TYPES.Identifier &&
+        (l.key.property.type === utils_1.AST_NODE_TYPES.Identifier || l.key.property.type === utils_1.AST_NODE_TYPES.PrivateIdentifier) &&
+        (r.key.property.type === utils_1.AST_NODE_TYPES.Identifier || r.key.property.type === utils_1.AST_NODE_TYPES.PrivateIdentifier)) {
+        if (l.computed !== r.computed) {
+            return l.computed ? 1 : -1;
+        }
+        const lObject = l.key.object.name;
+        const rObject = r.key.object.name;
+        if (lObject !== rObject) {
+            return lObject < rObject ? -1 : 1;
+        }
+        const lKey = l.key.property.name;
+        const rKey = r.key.property.name;
+        return lKey === rKey ? 0 : lKey < rKey ? -1 : 1;
+    }
     else {
         const lOrder = (0, exports.getAstNodeTypeOrder)(l.key.type);
         const rOrder = (0, exports.getAstNodeTypeOrder)(r.key.type);
@@ -86,8 +104,23 @@ const makeArrayValueComparer = ({ isReversed, sourceCode }) => {
     };
     return isReversed ? (l, r) => -comparer(l, r) : comparer;
 };
+const makeEnumMemberComparer = ({ isReversed }) => {
+    const comparer = (l, r) => {
+        if (l.id.type === utils_1.AST_NODE_TYPES.Literal && r.id.type === utils_1.AST_NODE_TYPES.Literal) {
+            return compareLiterals(l.id.value, r.id.value);
+        }
+        else if (l.id.type === utils_1.AST_NODE_TYPES.Identifier && r.id.type === utils_1.AST_NODE_TYPES.Identifier) {
+            return l.id.name === r.id.name ? 0 : l.id.name < r.id.name ? -1 : 1;
+        }
+        else {
+            return (0, exports.getAstNodeTypeOrder)(l.id.type) - (0, exports.getAstNodeTypeOrder)(r.id.type);
+        }
+    };
+    return isReversed ? (l, r) => -comparer(l, r) : comparer;
+};
 exports.ComparerUtils = {
     makeObjectPropertyComparer,
     makeInterfacePropertyComparer,
     makeArrayValueComparer,
+    makeEnumMemberComparer,
 };
