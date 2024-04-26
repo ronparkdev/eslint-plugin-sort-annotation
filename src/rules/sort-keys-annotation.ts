@@ -195,6 +195,48 @@ export default createRule<Options, MessageIds>({
           })
         }
       },
+      TSEnumDeclaration(node): void {
+        // Determine the line before the enum declaration to find potential configuration comments
+        const commentExpectedEndLine = node.loc.start.line - 1
+
+        // Extract the sorting configuration from the comments
+        const config = ConfigUtils.getConfig(sourceCode, '@sort-keys', commentExpectedEndLine)
+        if (!config) {
+          return // No configuration found, skip sorting
+        }
+
+        const { isReversed } = config
+
+        // Assuming a similar comparer can be used or create a specific one for enums
+        const comparer = ComparerUtils.makeEnumMemberComparer({ isReversed })
+
+        // Collect all enum members
+        const members = node.members
+        const sortedMembers = [...members].sort(comparer)
+
+        // Determine if there is a need to sort
+        const needSort = ArrayUtils.zip2(members, sortedMembers).some(
+          ([member, sortedMember]) => member !== sortedMember,
+        )
+
+        if (needSort) {
+          const diffRanges = ArrayUtils.zip2(members, sortedMembers).map(([from, to]) => ({
+            from: from.range,
+            to: to.range,
+          }))
+
+          const fixedText = FixUtils.getFixedText(sourceCode, node.range, diffRanges)
+
+          // Report the issue and provide a fix
+          context.report({
+            node,
+            messageId: HAS_UNSORTED_KEYS_MESSAGE_ID,
+            fix(fixer) {
+              return fixer.replaceTextRange(node.range, fixedText)
+            },
+          })
+        }
+      },
     }
   },
 })
