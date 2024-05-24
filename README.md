@@ -1,3 +1,7 @@
+<h1>⚠️ Changed to eslint-plugin-annotation to add other features besides sorting! </h1>
+
+* -> [eslint-plugin-annotation](https://github.com/ronparkdev/eslint-plugin-annotation)
+
 # eslint-plugin-sort-annotation
 [![NPM version][npm-image]][npm-url] [![Build Status][build-image]][build-url]
 
